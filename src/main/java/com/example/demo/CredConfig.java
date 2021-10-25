@@ -1,26 +1,30 @@
 package com.example.demo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 import com.example.demo.dto.Credentials;
 
 @Configuration
-@PropertySource("classpath:/endpoint.properties")
+@ConfigurationProperties("app.myapps")
+@PropertySource("classpath:/credentials.properties")
 public class CredConfig {
 
-	private Credentials credentials = new Credentials();
+	 private Credentials credentials = new Credentials();
+	//private Map<String, String> credentials = new HashMap<>();
 
-	@Bean
-	@ConfigurationProperties(prefix ="app.myapps.credentials")
-	public Credentials credentials() {
+	public Credentials getCredentials() {
 		return credentials;
 	}
 
 	public String getCreds(String name) {
-		System.out.println(credentials());
-		return credentials().getUsername().equals(name) ? credentials().getUsername() : null;
+		System.out.println(getCredentials());
+		return credentials.getUsername().equals(name) ? credentials.getUsername() : null;
+		//return credentials.get("username").equals(name) ? credentials.get("username") : null;
+
 	}
 }
